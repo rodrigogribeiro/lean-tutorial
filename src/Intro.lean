@@ -1,6 +1,7 @@
 import standard
+import data.sigma
 
-open nat bool
+open nat bool prod sigma
 
 check 3
 
@@ -21,3 +22,47 @@ theorem implies_chain (p q r : Prop) : (p → q) → (q → r) → (p → r) :=
   assume Hp : p,
   show r, from Hqr (Hpq Hp)
           
+
+set_option pp.universes true
+
+constants A B C : Type
+
+check prod
+check prod A 
+check prod A B
+
+
+eval ((λ x : nat, x + 1) 1) -- result 2
+
+
+definition gfa (f : A → B)(g : B → C)(x : A) : C := g (f x)
+
+print gfa
+
+
+section composition
+  variables (A B C : Type)
+  variables (f : A -> B) (g : B -> C) (x : A)
+
+  definition comp := g (f x)
+end composition
+ 
+namespace hide
+  constant list : Type -> Type
+  constant cons : Π A : Type, A -> list A -> list A
+  constant nil : Π A : Type, list A
+end hide
+
+
+namespace prodsamples 
+  variable A : Type
+  variable B : A -> Type
+  variable a : A
+  variable b : B a
+  
+  check ⟨ a , b ⟩
+
+  eval pr1 ⟨ a , b ⟩
+
+  definition id {A : Type} : A -> A := λ x , x
+end prodsamples
