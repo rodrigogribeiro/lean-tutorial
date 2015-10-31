@@ -27,4 +27,27 @@ theorem example2 : p ∨ q ↔ q ∨ p :=
               show p ∨ q, from or.intro_right p Hq)
             (assume Hp : p,
               show p ∨ q, from or.intro_left q Hp))
-       
+
+theorem example3 : p ∧ (q ∨ r) ↔ (p ∧ q) ∨ (p ∧ r) := 
+   iff.intro
+       (assume H : p ∧ (q ∨ r), 
+          have Hp : p, from and.left H,
+          or.elim (and.right H)
+                  (assume Hq : q, 
+                     show (p ∧ q) ∨ (p ∧ r), 
+                       from or.intro_left (p ∧ r) 
+                                          (and.intro Hp Hq))
+                  (assume Hr : r, 
+                     show (p ∧ q) ∨ (p ∧ r), 
+                       from or.intro_right (p ∧ q)
+                                           (and.intro Hp Hr)))
+       (assume H : (p ∧ q) ∨ (p ∧ r),
+          or.elim H
+                  (assume Hp : p ∧ q, 
+                     show p ∧ (q ∨ r), 
+                       from (and.intro (and.left Hp)
+                                       (or.intro_left r (and.right Hp))))
+                  (assume Hq : p ∧ r, 
+                     show p ∧ (q ∨ r), 
+                       from (and.intro (and.left Hq)
+                                       (or.intro_right q (and.right Hq)))))
