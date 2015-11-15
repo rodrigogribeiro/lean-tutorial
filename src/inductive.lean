@@ -58,17 +58,17 @@ namespace natural
     rec_on n m (λ n ac, natural.succ ac)
 
   notation 0 := @natural.zero
-  infix `_.+_` :30 := add
+  infix `+` := add
 
   open eq
 
-  theorem add_zero (n : natural) : add n 0 = n :=
+  theorem add_zero (n : natural) : n + 0 = n :=
     induction_on n 
-      (show (0 .+ 0) = 0, from rfl)
+      (show 0 + 0 = 0, from rfl)
       (take n, 
-       assume IH : (n .+ 0) = n,
-       show ((succ n) .+ 0) = succ n, from 
+       assume IH : (n + 0) = n,
+       show ((succ n) + 0) = succ n, from 
          calc
-           succ n .+ 0 = succ (n .+ 0) : rfl 
+           succ n + 0 = succ (n + 0) : rfl 
            ... = succ n : IH)
 end natural
